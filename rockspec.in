@@ -1,0 +1,28 @@
+package = 'lua-Silva'
+version = '@version@-@rev@'
+source = {
+    url = 'http://github.com/fperrad/lua-Silva/raw/releases/lua-silva-@version@.tar.gz',
+    md5 = '@md5@',
+    dir = 'lua-Silva-@version@',
+}
+description = {
+    summary = "your string matcher expert",
+    detailed = [[
+    ]],
+    homepage = 'http://fperrad.github.com/lua-Silva',
+    maintainer = 'Francois Perrad',
+    license = 'MIT/X11'
+}
+dependencies = {
+    'lua >= 5.1',
+}
+build = {
+    type = 'builtin',
+    modules = {
+        ['Silva']               = 'src/Silva.lua',
+        ['Silva.identity']      = 'src/Silva/identity.lua',
+        ['Silva.lua']           = 'src/Silva/lua.lua',
+        ['Silva.pcre']          = 'src/Silva/pcre.lua',
+    },
+    copy_directories = { 'docs', 'test' },
+}

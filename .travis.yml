@@ -1,0 +1,38 @@
+language: python
+sudo: false
+
+env:
+  - LUA="lua 5.1"       COMPAT=default  CFLAGS=""
+  - LUA="lua 5.2"       COMPAT=default  CFLAGS=""
+  - LUA="lua 5.2"       COMPAT=none     CFLAGS=""
+  - LUA="lua 5.3"       COMPAT=default  CFLAGS=""
+  - LUA="lua 5.3"       COMPAT=none     CFLAGS=""
+  - LUA="lua 5.3"       COMPAT=default  CFLAGS="-DLUA_NOCVTN2S -DLUA_NOCVTS2N"
+  - LUA="luajit 2.0"    COMPAT=none     CFLAGS=""
+  - LUA="luajit 2.0"    COMPAT=all      CFLAGS=""
+  - LUA="luajit 2.1"    COMPAT=none     CFLAGS=""
+  - LUA="luajit 2.1"    COMPAT=all      CFLAGS=""
+
+before_install:
+  - pip install hererocks
+  - hererocks HERE --$LUA --compat $COMPAT --cflags="$CFLAGS" --no-readline --luarocks latest --verbose
+  - hererocks HERE --show
+  - source HERE/bin/activate
+
+install:
+  - luarocks install luacov-coveralls
+  - luarocks install luacheck
+  - luarocks install lua-testmore
+  - luarocks install lrexlib-pcre
+
+script:
+  - make luacheck
+  - make test
+
+after_success:
+  - make coveralls
+
+branches:
+  only:
+    - master
+
